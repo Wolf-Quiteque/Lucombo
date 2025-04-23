@@ -93,6 +93,24 @@
         margin-top: 2rem;
     }
 
+    /* Course Cards */
+    .course-card {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .course-card:hover {
+        border-color: var(--accent);
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.1);
+        transform: translateY(-3px);
+    }
+
+    .course-card.selected {
+        border-color: var(--accent);
+        background-color: rgba(13, 110, 253, 0.05);
+    }
 
     /* Language Switcher */
     .language-switcher {
@@ -136,25 +154,70 @@
   passcodeInput: '',
   isAuthenticated: false,
   errorMessage: '',
+  selectedCourse: '',
   schools: [
-    { id: 'acite', name_pt: 'ACADEMIA DE CIÊNCIAS SOCIAIS E TECNOLOGIA - ACITE', name_en: 'ACADEMY OF SOCIAL SCIENCES AND TECHNOLOGY - ACITE', years: [ { year: '2025', passcode: '228899' } ] }
+    { id: 'acite', 
+      name_pt: 'ACADEMIA DE CIÊNCIAS SOCIAIS E TECNOLOGIA - ACITE', 
+      name_en: 'ACADEMY OF SOCIAL SCIENCES AND TECHNOLOGY - ACITE', 
+      years: [ 
+        { 
+          year: '2025', 
+          courses: [
+            { 
+              id: 'economia', 
+              name_pt: 'CRESCIMENTO E DESENVOLVIMENTO ECONOMICO', 
+              name_en: 'ECONOMIC GROWTH AND DEVELOPMENT',
+              description_pt: 'Curso sobre os fundamentos do crescimento e desenvolvimento econômico.',
+              description_en: 'Course on the fundamentals of economic growth and development.',
+              passcode: '228899'
+            },
+            { 
+              id: 'financas', 
+              name_pt: 'FINANÇAS CORPORATIVAS', 
+              name_en: 'CORPORATE FINANCE',
+              description_pt: 'Estudo das decisões financeiras dentro das empresas.',
+              description_en: 'Study of financial decisions within corporations.',
+              passcode: '228899'
+            }
+          ]
+        } 
+      ] 
+    }
     // Add more schools here in the future
   ],
   get availableYears() {
     const school = this.schools.find(s => s.id === this.selectedSchool);
     return school ? school.years : [];
   },
+  get availableCourses() {
+    const school = this.schools.find(s => s.id === this.selectedSchool);
+    if (!school) return [];
+    const yearData = school.years.find(y => y.year === this.selectedYear);
+    return yearData ? yearData.courses : [];
+  },
   resetSelection() {
     this.selectedYear = '';
+    this.selectedCourse = '';
+    this.passcodeInput = '';
+    this.isAuthenticated = false;
+    this.errorMessage = '';
+  },
+  resetCourseSelection() {
+    this.selectedCourse = '';
     this.passcodeInput = '';
     this.isAuthenticated = false;
     this.errorMessage = '';
   },
   checkPasscode() {
     const school = this.schools.find(s => s.id === this.selectedSchool);
-    const yearData = school ? school.years.find(y => y.year === this.selectedYear) : null;
-
-    if (yearData && this.passcodeInput === yearData.passcode) {
+    if (!school) return;
+    
+    const yearData = school.years.find(y => y.year === this.selectedYear);
+    if (!yearData) return;
+    
+    const course = yearData.courses.find(c => c.id === this.selectedCourse);
+    
+    if (course && this.passcodeInput === course.passcode) {
       this.isAuthenticated = true;
       this.errorMessage = '';
     } else {
@@ -162,6 +225,12 @@
       this.passcodeInput = ''; // Clear input on failure
       this.errorMessage = this.language === 'pt' ? 'Código de acesso inválido.' : 'Invalid passcode.';
     }
+  },
+  selectCourse(courseId) {
+    this.selectedCourse = courseId;
+    this.passcodeInput = '';
+    this.isAuthenticated = false;
+    this.errorMessage = '';
   }
 }">
   <nav class="navbar navbar-expand-lg sticky-top">
@@ -221,7 +290,7 @@
             <span x-show="language === 'en'">Select Institution</span>
           </label>
           <select id="schoolSelect" class="form-select" x-model="selectedSchool" @change="resetSelection()">
-            <option value="" disabled>
+            <option value="" selected disabled>
                 <span x-show="language === 'pt'">-- Escolha uma Instituição --</span>
                 <span x-show="language === 'en'">-- Choose an Institution --</span>
             </option>
@@ -236,8 +305,8 @@
             <span x-show="language === 'pt'">Selecione o Ano Letivo</span>
             <span x-show="language === 'en'">Select Academic Year</span>
           </label>
-          <select id="yearSelect" class="form-select" x-model="selectedYear" @change="isAuthenticated = false; errorMessage = ''; passcodeInput = '';">
-             <option value="" disabled>
+          <select id="yearSelect" class="form-select" x-model="selectedYear" @change="resetCourseSelection()">
+             <option value="" selected disabled>
                 <span x-show="language === 'pt'">-- Escolha um Ano --</span>
                 <span x-show="language === 'en'">-- Choose a Year --</span>
              </option>
@@ -248,7 +317,37 @@
         </div>
       </div>
 
-      <div class="row g-3 mt-3" x-show="selectedYear" x-transition>
+      <!-- Course Selection Area -->
+      <div class="row g-4 mt-3" x-show="selectedYear && availableCourses.length > 0" x-transition>
+        <div class="col-12">
+          <h4>
+            <span x-show="language === 'pt'">Cursos Disponíveis</span>
+            <span x-show="language === 'en'">Available Courses</span>
+          </h4>
+        </div>
+        
+        <template x-for="course in availableCourses" :key="course.id">
+          <div class="col-md-6">
+            <div class="card course-card h-100" 
+                 :class="{'selected': selectedCourse === course.id}"
+                 @click="selectCourse(course.id)">
+              <div class="card-body">
+                <h5 class="card-title fw-bold" x-text="language === 'pt' ? course.name_pt : course.name_en"></h5>
+                <p class="card-text" x-text="language === 'pt' ? course.description_pt : course.description_en"></p>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <!-- Passcode Area -->
+      <div class="row g-3 mt-4" x-show="selectedCourse" x-transition>
+        <div class="col-12">
+          <h5>
+            <span x-show="language === 'pt'">Acesso ao Material</span>
+            <span x-show="language === 'en'">Material Access</span>
+          </h5>
+        </div>
         <div class="col-md-6">
           <label for="passcode" class="form-label">
             <span x-show="language === 'pt'">Código de Acesso</span>
@@ -271,27 +370,62 @@
     </div>
 
     <div class="materials-area fade-in" x-show="isAuthenticated" x-transition>
-       <h2 class="mb-3">
-           <span x-show="language === 'pt'">Materiais para <span x-text="selectedSchool ? (schools.find(s => s.id === selectedSchool)?.name_pt || '') : ''"></span> - <span x-text="selectedYear"></span></span>
-           <span x-show="language === 'en'">Materials for <span x-text="selectedSchool ? (schools.find(s => s.id === selectedSchool)?.name_en || '') : ''"></span> - <span x-text="selectedYear"></span></span>
+       <h2 class="mb-4">
+           <span x-show="language === 'pt'">
+             Materiais: 
+             <span x-text="selectedCourse ? (availableCourses.find(c => c.id === selectedCourse)?.name_pt || '') : ''"></span> 
+             (<span x-text="selectedYear"></span>)
+           </span>
+           <span x-show="language === 'en'">
+             Materials: 
+             <span x-text="selectedCourse ? (availableCourses.find(c => c.id === selectedCourse)?.name_en || '') : ''"></span>
+             (<span x-text="selectedYear"></span>)
+           </span>
        </h2>
-       <p>
-          <span x-show="language === 'pt'">Bem-vindo! Os materiais do curso estarão disponíveis aqui.</span>
-          <span x-show="language === 'en'">Welcome! Course materials will be available here.</span>
+       
+       <p class="lead mb-4">
+          <span x-show="language === 'pt'">Bem-vindo aos materiais do curso!</span>
+          <span x-show="language === 'en'">Welcome to the course materials!</span>
        </p>
-       <ul>
-           <li>
-               <span x-show="language === 'pt'">Plano de Aulas</span>
-               <span x-show="language === 'en'">Syllabus</span>
-               </li>
-           <li>
-               <span x-show="language === 'pt'">Apresentação Semana 1</span>
-               <span x-show="language === 'en'">Week 1 Presentation</span>
-               </li>
-           </ul>
+       
+       <div class="list-group">
+           <a href="#" class="list-group-item list-group-item-action">
+               <div class="d-flex w-100 justify-content-between">
+                   <h5 class="mb-1">
+                       <i class="bi bi-file-earmark-text me-2"></i>
+                       <span x-show="language === 'pt'">Plano de Aulas</span>
+                       <span x-show="language === 'en'">Syllabus</span>
+                   </h5>
+                   <small>PDF</small>
+               </div>
+           </a>
+           <a href="#" class="list-group-item list-group-item-action">
+               <div class="d-flex w-100 justify-content-between">
+                   <h5 class="mb-1">
+                       <i class="bi bi-file-earmark-slides me-2"></i>
+                       <span x-show="language === 'pt'">Apresentação Semana 1</span>
+                       <span x-show="language === 'en'">Week 1 Presentation</span>
+                   </h5>
+                   <small>PPT</small>
+               </div>
+           </a>
+           <a href="#" class="list-group-item list-group-item-action">
+               <div class="d-flex w-100 justify-content-between">
+                   <h5 class="mb-1">
+                       <i class="bi bi-journal-text me-2"></i>
+                       <span x-show="language === 'pt'">Leituras Recomendadas</span>
+                       <span x-show="language === 'en'">Recommended Readings</span>
+                   </h5>
+                   <small>PDF</small>
+               </div>
+           </a>
+       </div>
     </div>
 
-  </div><footer class="bg-light py-4 mt-auto"> <div class="container text-center">
+  </div>
+  
+  <footer class="bg-light py-4 mt-auto">
+    <div class="container text-center">
       <p class="text-muted mb-0">
         <span x-show="language === 'pt'">&copy; 2025 Dr. Lucombo Joaquim Luveia. Todos os direitos reservados.</span>
         <span x-show="language === 'en'">&copy; 2025 Dr. Lucombo Joaquim Luveia. All rights reserved.</span>
@@ -302,6 +436,5 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
           crossorigin="anonymous"></script>
-
   </body>
 </html>

@@ -112,50 +112,7 @@
 </head>
 
 <body x-data="{ language: 'pt', showNav: false }">
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg sticky-top">
-    <div class="container">
-      <a class="navbar-brand d-lg-none" href="index.html">Dr. Lucombo Luveia</a>
-      <button class="navbar-toggler" type="button" @click="showNav = !showNav" 
-              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      
-      <div class="collapse navbar-collapse" :class="{'show': showNav}" id="navbarContent">
-        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">
-              <span x-show="language === 'pt'">Início</span>
-              <span x-show="language === 'en'">Home</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" download href="assets/pdf/CV_Lucombo_Luveia_.pdf">
-              <span>CV</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="research.html">
-              <span x-show="language === 'pt'">Projetos de Pesquisa</span>
-              <span x-show="language === 'en'">Research Projects</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="teaching.html">
-              <span x-show="language === 'pt'">Ensino</span>
-              <span x-show="language === 'en'">Teaching</span>
-            </a>
-          </li>
-        </ul>
-        
-        <div class="language-switcher ms-auto" @click="language = language === 'pt' ? 'en' : 'pt'">
-          <i class="bi bi-globe2"></i>
-          <span x-text="language === 'pt' ? 'EN' : 'PT'" class="ms-1"></span>
-        </div>
-      </div>
-    </div>
-  </nav>
-
+ 
   <!-- Main Content -->
   <div class="container page-content fade-in">
     <h1 class="page-title">

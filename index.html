@@ -1,110 +1,283 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LUCOMBO JOAQUIM LUVEIA</title>
-    <!-- CSS only -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
-      crossorigin="anonymous"
-    />
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dr. Lucombo Joaquim Luveia</title>
+  
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
+  
+  <!-- Alpine.js -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.5/cdn.min.js"></script>
+  
+  <!-- Custom CSS -->
+  <style>
+    :root {
+      --primary: #212529;
+      --secondary: #495057;
+      --accent: #0d6efd;
+      --light-bg: #f8f9fa;
+      --border: #dee2e6;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      color: var(--primary);
+      background-color: #fff;
+      overflow-x: hidden;
+    }
+    
+    /* Navbar Styles */
+    .navbar {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      padding: 1rem 2rem;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link {
+      color: var(--secondary) !important;
+      font-weight: 500;
+      margin: 0 0.5rem;
+      padding: 0.5rem 1rem;
+      transition: all 0.2s ease;
+      border-radius: 4px;
+    }
+    
+    .nav-link:hover, .nav-link.active {
+      color: var(--accent) !important;
+      background-color: rgba(13, 110, 253, 0.05);
+    }
+    
+    .navbar-brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary) !important;
+    }
+    
+    /* Profile Section */
+    .profile-section {
+      padding: 3rem 0;
+    }
+    
+    .profile-image {
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      max-width: 100%;
+      height: auto;
+    }
+    
+    .profile-image:hover {
+      transform: scale(1.02);
+    }
+    
+    .name-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+    
+    .position-title {
+      font-size: 1.2rem;
+      color: var(--secondary);
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
+    
+    .bio-text {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--secondary);
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Contact Bar */
+    .contact-bar {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .contact-icon {
+      color: var(--secondary);
+      font-size: 1.5rem;
+      transition: all 0.2s ease;
+    }
+    
+    .contact-icon:hover {
+      color: var(--accent);
+      transform: translateY(-3px);
+    }
+    
+    /* Animations */
+    .fade-in {
+      animation: fadeIn 0.8s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+      .navbar {
+        padding: 0.5rem 1rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .profile-section {
+        padding: 2rem 0;
+      }
+      
+      .profile-image {
+        margin-bottom: 2rem;
+      }
+    }
+    
+    /* Language Switcher */
+    .language-switcher {
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+    
+    .language-switcher:hover {
+      background-color: var(--light-bg);
+    }
+  </style>
+</head>
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
-    />
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg ">
-      <div class="container-fluid">
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item ">
-              <a class="nav-link active" aria-current="page" href="index.html"
-                >Home</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" download="assets/pdf/CV_Lucombo_Luveia_.pdf" href="#">CV</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="research.html"
-                >Research Projects</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="teaching.html">Teachng</a>
-            </li>
+<body x-data="{ language: 'pt', showNav: false }">
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-lg-none" href="index.html">Dr. Lucombo Luveia</a>
+      <button class="navbar-toggler" type="button" @click="showNav = !showNav" 
+              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" :class="{'show': showNav}" id="navbarContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="index.html">
+              <span x-show="language === 'pt'">Início</span>
+              <span x-show="language === 'en'">Home</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" download href="assets/pdf/CV_Lucombo_Luveia_.pdf">
+              <span>CV</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="research.html">
+              <span x-show="language === 'pt'">Projetos de Pesquisa</span>
+              <span x-show="language === 'en'">Research Projects</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="teaching.html">
+              <span x-show="language === 'pt'">Ensino</span>
+              <span x-show="language === 'en'">Teaching</span>
+            </a>
+          </li>
+        </ul>
         
-          </ul>
+        <div class="language-switcher ms-auto" @click="language = language === 'pt' ? 'en' : 'pt'">
+          <i class="bi bi-globe2"></i>
+          <span x-text="language === 'pt' ? 'EN' : 'PT'" class="ms-1"></span>
         </div>
       </div>
-    </nav>
-    <div class="container">
-      <div class="row mt-5">
-        <div class="col-md-4 col-sm-12 text-center">
-          <img
-            src="assets/images/Luveia-US-email.jpg"
-            class="img-thumbnail"
-            alt="..."
-          />
+    </div>
+  </nav>
+  <!-- Main Content -->
+  <div class="container profile-section">
+    <div class="row align-items-center">
+      <div class="col-lg-4 col-md-5 text-center fade-in">
+        <img src="assets/images/Luveia-US-email.jpg" class="profile-image img-fluid" alt="Dr. Lucombo Joaquim Luveia" />
         
+        <div class="contact-bar mt-4">
+          <a href="mailto:contact@example.com" class="contact-icon">
+            <i class="bi bi-envelope"></i>
+          </a>
+          <a href="#" class="contact-icon">
+            <i class="bi bi-linkedin"></i>
+          </a>
+          <a href="#" class="contact-icon">
+            <i class="bi bi-twitter"></i>
+          </a>
+          <a href="#" class="contact-icon">
+            <i class="bi bi-google"></i>
+          </a>
         </div>
-        <div class="col-md-8 col-sm-12 mt-5">
-          <div class="text-center text-primary"><h1>LUCOMBO JOAQUIM LUVEIA</h1>
-            <p style="font-size:17px; font-weight:600 mt-5 mb-1"> PhD candidate, Department of Economics</p></div>
-
-
-
-          <div class="mt-5">
+      </div>
+      
+      <div class="col-lg-8 col-md-7 fade-in" style="animation-delay: 0.2s;">
+        <div class="text-md-start text-center">
+          <h1 class="name-title" x-text="language === 'pt' ? 'DR. LUCOMBO JOAQUIM LUVEIA' : 'DR. LUCOMBO JOAQUIM LUVEIA'"></h1>
           
-            <p style="font-size:15px; font-weight:500">
-              I am a macro-economist with focus on the field of labor, international Growth &
-development, and urban economics as well as researcher in health. My research focus
-on energy producing countries, Africa, US, China and lusophone economies. 
-
-<p style="font-size:15px; font-weight:500">I have 23
-years of professional and academic experience overall at various levels. During my
-career, I have developed a strong leadership and negotiations skills, and the ability to
-build cohesive, productive teams while fostering and encouraging creativity and quality
-research as well as a track record on effective organizational, communication skills, and
-excellent inter-personal relations. </p>
+          <p class="position-title">
+            <span x-show="language === 'pt'">Doutor em Economia</span>
+            <span x-show="language === 'en'">PhD in Economics</span>
+          </p>
+          
+          <div class="bio-section">
+            <p class="bio-text" x-show="language === 'pt'">
+              Sou um macroeconomista com foco nos campos de trabalho, crescimento e desenvolvimento internacional, e economia urbana, bem como pesquisador em saúde. Minha pesquisa concentra-se em países produtores de energia, África, EUA, China e economias lusófonas.
+            </p>
+            
+            <p class="bio-text" x-show="language === 'pt'">
+              Tenho 23 anos de experiência profissional e acadêmica em vários níveis. Durante minha carreira, desenvolvi fortes habilidades de liderança e negociação, e a capacidade de construir equipes coesas e produtivas, enquanto promovo e incentivo a criatividade e pesquisa de qualidade, além de um histórico de habilidades organizacionais e de comunicação eficazes, e excelentes relações interpessoais.
+            </p>
+            
+            <p class="bio-text" x-show="language === 'en'">
+              I am a macro-economist with focus on the field of labor, international growth & development, and urban economics as well as researcher in health. My research focus on energy producing countries, Africa, US, China and lusophone economies.
+            </p>
+            
+            <p class="bio-text" x-show="language === 'en'">
+              I have 23 years of professional and academic experience overall at various levels. During my career, I have developed strong leadership and negotiations skills, and the ability to build cohesive, productive teams while fostering and encouraging creativity and quality research as well as a track record on effective organizational, communication skills, and excellent inter-personal relations.
             </p>
           </div>
-
-
-
-
-
- 
+          
+          <div class="mt-4">
+            <a href="research.html" class="btn btn-outline-primary me-2">
+              <span x-show="language === 'pt'">Ver Pesquisas</span>
+              <span x-show="language === 'en'">View Research</span>
+            </a>
+            <a href="assets/pdf/CV_Lucombo_Luveia_.pdf" class="btn btn-primary" download>
+              <span x-show="language === 'pt'">Baixar CV</span>
+              <span x-show="language === 'en'">Download CV</span>
+            </a>
+          </div>
         </div>
-       
       </div>
-
-      
     </div>
+  </div>
 
-    
-    <!-- JavaScript Bundle with Popper -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
-      crossorigin="anonymous"
-    ></script>
-  </body>
-</html>
+  <!-- Footer -->
+  <footer class="bg-light py-4 mt-5">
+    <div class="container text-center">
+      <p class="text-muted mb-0">
+        <span x-show="language === 'pt'">&copy; 2025 Dr. Lucombo Joaquim Luveia. Todos os direitos reservados.</span>
+        <span x-show="language === 'en'">&copy; 2025 Dr. Lucombo Joaquim Luveia. All rights reserved.</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" 
+          integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" 
+          crossorigin="anonymous"></script>
+  
+  <!-- Custom JS -->
+  <script src="app.js"></script>
